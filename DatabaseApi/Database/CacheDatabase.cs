@@ -36,6 +36,24 @@ namespace DatabaseApi.Database
             return true;
         }
 
+        public bool Delete(string key, int index)
+        {
+            if (string.IsNullOrEmpty(key))
+            {
+                return false;
+            }
+
+            List<JsonElement> jsonList = new List<JsonElement>();
+            _cache.TryGetValue(key, out jsonList);
+
+            jsonList.RemoveAt(index);
+
+            MemoryCacheEntryOptions x = new MemoryCacheEntryOptions() { AbsoluteExpiration = DateTimeOffset.UtcNow.AddDays(2) };
+            _cache.Set(key, jsonList, x);
+
+            return true;
+        }
+
         public List<JsonElement> Get(string key)
         {
             if (string.IsNullOrEmpty(key))
@@ -46,6 +64,37 @@ namespace DatabaseApi.Database
             List<JsonElement> jsonList = new List<JsonElement>();
             _cache.TryGetValue(key, out jsonList);
             return jsonList;
+        }
+
+        public JsonElement Get(string key, int index)
+        {
+            if (string.IsNullOrEmpty(key))
+            {
+                return new JsonElement();
+            }
+
+            List<JsonElement> jsonList = new List<JsonElement>();
+            _cache.TryGetValue(key, out jsonList);
+            return jsonList[index];
+        }
+
+        public bool Update(string key, int index, JsonElement jsonString)
+        {
+            if (string.IsNullOrEmpty(key))
+            {
+                return false;
+            }
+
+            List<JsonElement> jsonList = new List<JsonElement>();
+            _cache.TryGetValue(key, out jsonList);
+
+            jsonList[index] = jsonString;
+
+            MemoryCacheEntryOptions x = new MemoryCacheEntryOptions() { AbsoluteExpiration = DateTimeOffset.UtcNow.AddDays(2) };
+            _cache.Set(key, jsonList, x);
+
+            return true;
+
         }
     }
 }
