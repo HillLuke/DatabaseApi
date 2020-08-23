@@ -14,7 +14,7 @@ namespace DatabaseApi.Controllers
     /// Easier than making a new database & api for each mini project.
     /// Will be up to the calling api to cast returned json etc.
     /// </summary>
-    [Route("[controller]")]
+    [Route("")]
     [ApiController]
     public class DatabaseController : ControllerBase
     {
