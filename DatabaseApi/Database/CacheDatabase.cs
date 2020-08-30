@@ -54,6 +54,18 @@ namespace DatabaseApi.Database
             return true;
         }
 
+        public bool DeleteAll(string key)
+        {
+            if (string.IsNullOrEmpty(key))
+            {
+                return false;
+            }
+
+            _cache.Remove(key);
+
+            return true;
+        }
+
         public List<JsonElement> Get(string key)
         {
             if (string.IsNullOrEmpty(key))

@@ -54,7 +54,7 @@ namespace DatabaseApi.Controllers
             return BadRequest();
         }
 
-        [HttpPost]
+        [HttpPut]
         [Route("Update")]
         public IActionResult Update([FromQuery]string key, [FromQuery]int index, [FromBody] JsonElement jsonString)
         {
@@ -66,11 +66,23 @@ namespace DatabaseApi.Controllers
             return BadRequest();
         }
 
-        [HttpGet]
+        [HttpDelete]
         [Route("Delete")]
         public IActionResult Delete([FromQuery]string key, [FromQuery]int index)
         {
             if (_database.Delete(key, index))
+            {
+                return Ok();
+            }
+
+            return BadRequest();
+        }
+
+        [HttpDelete]
+        [Route("DeleteAll")]
+        public IActionResult DeleteAll([FromQuery]string key)
+        {
+            if (_database.DeleteAll(key))
             {
                 return Ok();
             }
